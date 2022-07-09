@@ -1,2 +1,2 @@
 # ip-filter
-deny china ip access
+Deny IP access from China
