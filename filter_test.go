@@ -31,4 +31,10 @@ func TestIPFilter_AllowAccess(t *testing.T) {
 
 	res, err := ipFilter.AllowAccess("222.209.99.196")
 	spew.Dump(res)
+
+	ipFilter, err = ip_filter.NewIpFilter().WithDenyChina()
+	require.NoError(t, err)
+
+	res, err = ipFilter.AllowAccess("222.209.99.196")
+	spew.Dump(res)
 }

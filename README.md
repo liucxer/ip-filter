@@ -4,5 +4,5 @@
 [![codecov](https://codecov.io/gh/liucxer/ip-filter/branch/master/graph/badge.svg)](https://codecov.io/gh/liucxer/ip-filter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/liucxer/ip-filter)](https://goreportcard.com/report/github.com/liucxer/ip-filter)
 
-## [Documentation](https://github.com/github.com/liucxer/wiki)
+## [Documentation](https://github.com/liucxer/ip-filter/wiki)
 Deny IP access from China

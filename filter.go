@@ -18,16 +18,29 @@ func NewIpFilter() *IPFilter {
 	return ipFilter
 }
 
+var CacheData = map[string][]byte{}
+
 func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
-	resp, err := http.Get("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/deny-china.xml")
-	if err != nil {
-		return f, err
+	var (
+		bts []byte
+		ok bool
+		err error
+	)
+	denyChinaUrl :="https://raw.githubusercontent.com/liucxer/ip-filter/main/config/deny-china.xml"
+
+	if bts, ok = CacheData[denyChinaUrl]; !ok {
+		resp, err := http.Get(denyChinaUrl)
+		if err != nil {
+			return f, err
+		}
+
+		bts, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return f, err
+		}
+		CacheData[denyChinaUrl] = bts
 	}
 
-	bts, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return f, err
-	}
 
 	filter, err := f.ParserByte(bts)
 	if err != nil {
