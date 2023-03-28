@@ -20,16 +20,15 @@ func NewIpFilter() *IPFilter {
 
 var CacheData = map[string][]byte{}
 
-func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
+func (f *IPFilter) WithDenyCountry(countryUrl string) (*IPFilter, error) {
 	var (
 		bts []byte
-		ok bool
+		ok  bool
 		err error
 	)
-	denyChinaUrl :="https://raw.githubusercontent.com/liucxer/ip-filter/main/config/deny-china.xml"
 
-	if bts, ok = CacheData[denyChinaUrl]; !ok {
-		resp, err := http.Get(denyChinaUrl)
+	if bts, ok = CacheData[countryUrl]; !ok {
+		resp, err := http.Get(countryUrl)
 		if err != nil {
 			return f, err
 		}
@@ -38,9 +37,8 @@ func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
 		if err != nil {
 			return f, err
 		}
-		CacheData[denyChinaUrl] = bts
+		CacheData[countryUrl] = bts
 	}
-
 
 	filter, err := f.ParserByte(bts)
 	if err != nil {
@@ -58,6 +56,18 @@ func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
 	f.Allow, _ = allowBuilder.IPSet()
 
 	return f, err
+}
+
+func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
+	return f.WithDenyCountry("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/deny-china.xml")
+}
+
+func (f *IPFilter) WithDenyTaiwan() (*IPFilter, error) {
+	return f.WithDenyCountry("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/taiwan-deny.xml")
+}
+
+func (f *IPFilter) WithDenyRussia() (*IPFilter, error) {
+	return f.WithDenyCountry("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/russia-deny.xml")
 }
 
 type Firewall struct {
@@ -85,12 +95,12 @@ func (p *IPFilter) ParserByte(bts []byte) (*IPFilter, error) {
 	addr := firewall.SystemWebServer.Security.IpSecurity.Address
 	var b netaddr.IPSetBuilder
 	for _, item := range addr {
-		ip, err :=netaddr.ParseIP(item.IpAddress)
+		ip, err := netaddr.ParseIP(item.IpAddress)
 		if err != nil {
 			return nil, err
 		}
 
-		mask, err :=netaddr.ParseIP(item.SubnetMask)
+		mask, err := netaddr.ParseIP(item.SubnetMask)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +124,6 @@ func (p *IPFilter) ParserByte(bts []byte) (*IPFilter, error) {
 
 	return &filter, nil
 }
-
 
 func (f *IPFilter) AllowAccess(ip string) (bool, error) {
 	netAddrIP, err := netaddr.ParseIP(ip)

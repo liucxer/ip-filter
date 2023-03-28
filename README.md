@@ -6,3 +6,4 @@
 
 ## [Documentation](https://github.com/liucxer/ip-filter/wiki)
 Deny IP access from China
+![img.png](img.png)
