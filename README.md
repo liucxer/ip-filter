@@ -7,3 +7,9 @@
 ## [Documentation](https://github.com/liucxer/ip-filter/wiki)
 Deny IP access from China
 ![img.png](img.png)
+
+``` 
+访问控制列表从 https://www.ip2location.com/free/visitor-blocker 下载
+选择使用web.config格式
+下载完了后，需要做xml反转移，去掉不必要的转义符号
+```
