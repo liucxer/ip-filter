@@ -63,7 +63,7 @@ func (f *IPFilter) WithDenyChina() (*IPFilter, error) {
 }
 
 func (f *IPFilter) WithDenyHongKong() (*IPFilter, error) {
-	return f.WithDenyCountry("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/deny-hongkong.xml")
+	return f.WithDenyCountry("https://raw.githubusercontent.com/liucxer/ip-filter/main/config/hongkong-deny.xml")
 }
 
 func (f *IPFilter) WithDenyTaiwan() (*IPFilter, error) {

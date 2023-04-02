@@ -51,6 +51,10 @@ func TestIPFilter_DenyChinaAndTaiwan(t *testing.T) {
 	require.NoError(t, err)
 	spew.Dump(res)
 
+	res, err = ipFilter.WithDenyHongKong()
+	require.NoError(t, err)
+	spew.Dump(res)
+
 	// 测试中国
 	resBool, err := ipFilter.AllowAccess("222.209.98.76")
 	require.NoError(t, err)
@@ -65,6 +69,12 @@ func TestIPFilter_DenyChinaAndTaiwan(t *testing.T) {
 
 	// 测试俄罗斯
 	resBool, err = ipFilter.AllowAccess("217.199.224.1")
+	require.NoError(t, err)
+	spew.Dump(resBool)
+	require.Equal(t, resBool, false)
+
+	// 测试香港
+	resBool, err = ipFilter.AllowAccess("45.41.9.1")
 	require.NoError(t, err)
 	spew.Dump(resBool)
 	require.Equal(t, resBool, false)
